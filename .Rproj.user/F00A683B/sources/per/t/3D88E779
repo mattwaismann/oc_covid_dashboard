@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1612829587740.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1586992445",
+    "id" : "3D88E779",
+    "lastKnownWriteTime" : 1612830845,
+    "last_content_update" : 1612830845494,
+    "path" : "C:/Users/MATT WAISMANN/Desktop/COVID19_dashboard/covid_dashboard/scratch.R",
+    "project_path" : "scratch.R",
+    "properties" : {
+        "cursorPosition" : "25,0",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

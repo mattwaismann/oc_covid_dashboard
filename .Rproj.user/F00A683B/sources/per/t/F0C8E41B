@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1612914021432.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1555032124",
+    "id" : "F0C8E41B",
+    "lastKnownWriteTime" : 1612917327,
+    "last_content_update" : 1612917327994,
+    "path" : "C:/Users/MATT WAISMANN/Desktop/COVID19_dashboard/covid_dashboard/global.R",
+    "project_path" : "global.R",
+    "properties" : {
+        "cursorPosition" : "43,1",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
