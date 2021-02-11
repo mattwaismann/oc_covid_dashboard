@@ -28,7 +28,7 @@ today_date = "2021/02/09"
 datasets = c("case","death","blueprint", "main","hospicu","pcr")
 for(i in 1:length(datasets)){
   detail <- datasets[i]
-  assign(paste(detail,"_list", sep = ""),fromJSON(paste("covid_dataoccovid_",detail,"_csv.json",sep = "")))
+  assign(paste(detail,"_list", sep = ""),fromJSON(paste("json_data/covid_dataoccovid_",detail,"_csv.json",sep = "")))
 }
 
 #cleaning
