@@ -15,10 +15,9 @@ library(ggthemes)
 library(gganimate)
 library(extrafont)
 library(zoo)
-library(Cairo) #for anti-aliasing
+#library(Cairo) #for anti-aliasing
 library(plotly)
-library(covidcast)
-options(shiny.usecairo=T)
+#options(shiny.usecairo=T)
 
 
 #Date
