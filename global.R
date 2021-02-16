@@ -4,7 +4,6 @@ library(ggplot2)
 library(dplyr)
 library(plyr)
 library(ggthemes)
-library(gganimate)
 library(dplyr)
 library(plyr)
 library(readr)
@@ -12,7 +11,6 @@ library(ggplot2)
 library(jsonlite)
 library(lubridate)
 library(ggthemes)
-library(gganimate)
 library(extrafont)
 library(zoo)
 #library(Cairo) #for anti-aliasing
@@ -21,7 +19,7 @@ library(plotly)
 
 
 #Date
-today_date = "2021/02/09"
+today_date = "2021/02/16"
 
 #reading
 datasets = c("case","death","blueprint", "main","hospicu","pcr")
@@ -39,20 +37,22 @@ hospicu_df <- hospicu_list$features$attributes
 pcr_df <- pcr_list$features$attributes
 names(case_df)[1] <- 'date'
 
+#adding dates
+#UPDATE DATE BY 1
+date_seq = seq(as.Date("2020/01/22"),as.Date(today_date), "days")
+
 #merging
 #UPDATE NAS TO REMOVE
 big_df = left_join(case_df,blueprint_df,by = c("date")) %>% left_join(y=death_df,by = c("date")) %>% left_join(y=main_df, by = c("date")) %>% left_join(y=hospicu_df, by = c("date"))%>% left_join(y = pcr_df, by = c("date"))
-big_df <- big_df[-(386:405),]
+big_df <- big_df[-((length(date_seq)+1):nrow(case_df)),]
 
 #select  only relevant features
 names(big_df)
 relevant <- c('date','total_cases_repo','daily_cases_repo','daily_cases_spec','daily_7day_avg.x','daily_dth.x','dth_date','total_dth_date','daily_neg_spec','daily_pos_spec','daily_spec','tot_pcr_pos','cdph_tpp','daily_test_repo','daily_7day_avg.y','daily_case_rate','positive_rate','new_var','hospital','icu')
 df <- big_df %>% select(relevant)
-
-#adding dates
-#UPDATE DATE BY 1
-date_seq = seq(as.Date("2020/01/22"),as.Date(today_date), "days")
 df$date <- date_seq
+
+
 
 
 #working with postivity and case rate
