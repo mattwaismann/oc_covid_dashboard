@@ -61,12 +61,12 @@ body <- dashboardBody(
             fluidRow(
               infoBox("This week's positive test rate", subtitle = paste("updated: ", today_date), paste(pos_mini_df$positivity_for_week %>% tail(1),"%"), color = "yellow", fill = T),
               infoBox("This week's adjusted case rate", subtitle = paste("updated: ", today_date), pos_mini_df$case_rate_for_week %>% tail(1), color = "yellow", fill = T),
-              infoBox("This week's Health Equity Index", subtitle = paste("updated: ", today_date), pos_mini_df$equity_index_for_week %>% tail(1), color = "yellow", fill = T),
+              infoBox("This week's Health Equity Index Quartile", subtitle = paste("updated: ", today_date), paste(pos_mini_df$equity_index_for_week %>% tail(1), "%"), color = "yellow", fill = T),
             ),
             fluidRow(
               box(tags$h4("Tier Information"),"The state is now using three statistics to judge counties. With some exceptions, metrics must surpass the benchmark for the next tier in order to loosen restrictions. The latest numbers, along with tier reassignments, are released each Tuesday. The first is called the",strong("adjusted case rate"),". It takes new cases in a recent seven-day period — excluding cases at prisons and jails — and adjusts for population. In some areas, that number is modified to account for the volume of testing. Orange County's most recent adjusted case rate was", pos_mini_df$case_rate_for_week %>% tail(1),
                 "The second metric is the", strong("positive test rate"),", which is the percentage of tests for the virus that come back positive. Orange County's most recent positive test rate was",pos_mini_df$positivity_for_week %>% tail(1),"%.
-                The third metric measures whether positive tests in the most disadvantaged neighborhoods have significantly exceeded a county's overall rate — a disparity that's been widespread during the pandemic. The statistic is known as the", strong("Health Equity Index"),". Orange County’s most recent score is",pos_mini_df$equity_index_for_week %>% tail(1),".",
+                The third metric measures whether positive tests in the most disadvantaged neighborhoods have significantly exceeded a county's overall rate — a disparity that's been widespread during the pandemic. The statistic is known as the", strong("Health Equity Index"),". Orange County’s most recent score is",pos_mini_df$equity_index_for_week %>% tail(1),"%.",
                 status = "primary"
               ),
               box(plotOutput("positivity"), status = "primary"
@@ -85,7 +85,7 @@ body <- dashboardBody(
   )
 )
 
-ui <- dashboardPage(
+ui <- dashboardPage(skin = 'black',
   dashboardHeader(title = "Orange County COVID-19 Tracker", titleWidth = 450),
   sidebar, 
   body
@@ -312,8 +312,8 @@ server <- function(input,output){
   output$case_rate <- renderPlot({
     #case rate 
     colors = c('#F58C0A','#F0240F','#BF28D7','#ECF20D')
-    tier_cutoffs <- levels(cut(pos_mini_df$positivity_for_week, breaks = c(0,1,4,7,100)))
-    pos_mini_df$tier <- cut(pos_mini_df$positivity_for_week, breaks = c(0,1,4,7,100))
+    tier_cutoffs <- levels(cut(pos_mini_df$positivity_for_week, breaks = c(0,1,4,7,30)))
+    pos_mini_df$tier <- cut(pos_mini_df$positivity_for_week, breaks = c(0,1,4,7,30))
     levels(pos_mini_df$tier) <- c("Yellow tier","Orange tier","Red tier","Purple tier")
     ymin = pos_mini_df$tier
     ymax <- pos_mini_df$tier
@@ -325,6 +325,7 @@ server <- function(input,output){
       ggplot(aes(x=week, y =case_rate_for_week)) + 
       geom_point(data = pos_mini_df) +
       geom_line() +
+      ylim(c(0,30)) +
       scale_x_continuous(labels = paste(pos_mini_df$start_week,"-", pos_mini_df$end_week), breaks = 1:length(pos_mini_df$start_week))+
       labs(title = "Orange County adjusted case rate by week", 
            subtitle = paste("updated: ", today_date),
@@ -338,10 +339,10 @@ server <- function(input,output){
                alpha = .4, fill = colors[1])+
       annotate("rect", xmin = 0, xmax = Inf, ymin = 4, ymax = 7,
                alpha = .4, fill = colors[2])+
-      annotate("rect", xmin = 0, xmax = Inf, ymin = 7, ymax = 90,
+      annotate("rect", xmin = 0, xmax = Inf, ymin = 7, ymax = 30,
                alpha = .4, fill = colors[3])+
       theme_fivethirtyeight() + 
-      ylim(c(0,90)) + 
+      ylim(c(0,30)) + 
       theme(axis.title = element_text(), text = element_text(family = "Verdana")) +
       theme(legend.position = 'top') +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
@@ -352,8 +353,8 @@ server <- function(input,output){
   output$equity_index <- renderPlot({
     #equity index rate 
     colors = c('#F58C0A','#F0240F','#BF28D7','#ECF20D')
-    tier_cutoffs <- levels(cut(pos_mini_df$positivity_for_week, breaks = c(0,2.1,5.2,8,100)))
-    pos_mini_df$tier <- cut(pos_mini_df$positivity_for_week, breaks = c(0,2.1,5.2,8,100))
+    tier_cutoffs <- levels(cut(pos_mini_df$positivity_for_week, breaks = c(0,2.2,5.2,8,100)))
+    pos_mini_df$tier <- cut(pos_mini_df$positivity_for_week, breaks = c(0,2.2,5.2,8,100))
     levels(pos_mini_df$tier) <- c("Yellow tier","Orange tier","Red tier","Purple tier")
     ymin = pos_mini_df$tier
     ymax <- pos_mini_df$tier
@@ -366,19 +367,19 @@ server <- function(input,output){
       geom_point(data = pos_mini_df) +
       geom_line() +
       scale_x_continuous(labels = paste(pos_mini_df$start_week,"-", pos_mini_df$end_week), breaks = 1:length(pos_mini_df$start_week))+
-      labs(title = "Orange County Health Equity Index by week", 
+      labs(title = "Orange County Health Equity Index Quartile by week", 
            subtitle = paste("updated: ", today_date),
            x = "Week",
            y = "Equity index",
            fill = "Tier") +
       # tiers c(0,2,5,8,100)
-      annotate("rect", xmin = 0, xmax = Inf, ymin = 0, ymax = 1,
+      annotate("rect", xmin = 0, xmax = Inf, ymin = 0, ymax = 2.2,
                alpha = .4, fill = colors[4])+
-      annotate("rect", xmin = 0, xmax = Inf, ymin = 1, ymax = 4,
+      annotate("rect", xmin = 0, xmax = Inf, ymin = 2.2, ymax = 5.3,
                alpha = .4, fill = colors[1])+
-      annotate("rect", xmin = 0, xmax = Inf, ymin = 4, ymax = 7,
+      annotate("rect", xmin = 0, xmax = Inf, ymin = 5.3, ymax = 8,
                alpha = .4, fill = colors[2])+
-      annotate("rect", xmin = 0, xmax = Inf, ymin = 7, ymax = 25,
+      annotate("rect", xmin = 0, xmax = Inf, ymin = 8, ymax = 25,
                alpha = .4, fill = colors[3])+
       theme_fivethirtyeight() + 
       ylim(c(0,25)) + 

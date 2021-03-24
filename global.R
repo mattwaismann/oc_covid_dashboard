@@ -18,11 +18,12 @@ library(plotly)
 #options(shiny.usecairo=T)
 
 
+
 #Date
-today_date = "2021/02/16"
+today_date = "2021/03/23"
 
 #reading
-datasets = c("case","death","blueprint", "main","hospicu","pcr")
+datasets = c("case","death","blueprint","main","hospicu","pcr")
 for(i in 1:length(datasets)){
   detail <- datasets[i]
   assign(paste(detail,"_list", sep = ""),fromJSON(paste("json_data/covid_dataoccovid_",detail,"_csv.json",sep = "")))

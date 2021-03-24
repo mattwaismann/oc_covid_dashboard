@@ -59,9 +59,8 @@ class Util:
 	    covid_server_pull.get_json(csv = 'occovid_pcr_csv')
 
 if __name__ == "__main__":
-	schedule.every(10).seconds.do(Util.get_all_json)
-	while True:
-		schedule.run_pending()
-		time.sleep(1)
+	Util.get_all_json()
+	print('done')
+
 
 
