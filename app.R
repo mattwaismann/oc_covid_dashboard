@@ -64,8 +64,8 @@ body <- dashboardBody(
               infoBox("This week's Health Equity Index Quartile", subtitle = paste("updated: ", today_date), paste(pos_mini_df$equity_index_for_week %>% tail(1), "%"), color = "yellow", fill = T),
             ),
             fluidRow(
-              box(tags$h4("Tier Information"),"The state is now using three statistics to judge counties. With some exceptions, metrics must surpass the benchmark for the next tier in order to loosen restrictions. The latest numbers, along with tier reassignments, are released each Tuesday. The first is called the",strong("adjusted case rate"),". It takes new cases in a recent seven-day period — excluding cases at prisons and jails — and adjusts for population. In some areas, that number is modified to account for the volume of testing. Orange County's most recent adjusted case rate was", pos_mini_df$case_rate_for_week %>% tail(1),
-                "The second metric is the", strong("positive test rate"),", which is the percentage of tests for the virus that come back positive. Orange County's most recent positive test rate was",pos_mini_df$positivity_for_week %>% tail(1),"%.
+              box(tags$h4("Tier Information"),"The state is now using three statistics to judge counties. With some exceptions, metrics must surpass the benchmark for the next tier in order to loosen restrictions. The latest numbers, along with tier reassignments, are released each Tuesday. The first is called the",strong("adjusted case rate"),". It takes new cases in a recent seven-day period — excluding cases at prisons and jails — and adjusts for population. In some areas, that number is modified to account for the volume of testing. Orange County's most recent adjusted case rate was", pos_mini_df$case_rate_for_week %>% tail(1),". 
+                The second metric is the", strong("positive test rate")," which is the percentage of tests for the virus that come back positive. Orange County's most recent positive test rate was",pos_mini_df$positivity_for_week %>% tail(1),"%.
                 The third metric measures whether positive tests in the most disadvantaged neighborhoods have significantly exceeded a county's overall rate — a disparity that's been widespread during the pandemic. The statistic is known as the", strong("Health Equity Index"),". Orange County’s most recent score is",pos_mini_df$equity_index_for_week %>% tail(1),"%.",
                 status = "primary"
               ),
@@ -113,7 +113,7 @@ server <- function(input,output){
                subtitle = paste("updated: ", today_date),
                x = "Date",
                y = "Reported cases") + 
-          theme_fivethirtyeight() +
+          theme_few() +
           theme(axis.title = element_text(), text = element_text(family = "Verdana"))
     font <- list(family = "Verdana", size = 13,color = 'white')
     label <- list(bgcolor = "#232F34",
@@ -141,7 +141,7 @@ server <- function(input,output){
            subtitle = paste("updated: ", today_date),
            x = "Date",
            y = "Reported cases") + 
-      theme_fivethirtyeight() +
+      theme_few() +
       theme(axis.title = element_text(), text = element_text(family = "Verdana"))
     font <- list(family = "Verdana", size = 13,color = 'white')
     label <- list(bgcolor = "#232F34",
@@ -168,7 +168,7 @@ server <- function(input,output){
            x = "Date",
            y = "Reported deaths")+
       geom_line(aes(y=sev_day_avg_daily_deaths_repo), col = 'black', size = .7, alpha = .8) +
-      theme_fivethirtyeight() +
+      theme_few() +
       theme(axis.title = element_text(), text = element_text(family = "Verdana"))
     font <- list(family = "Verdana", size = 13,color = 'white')
     label <- list(bgcolor = "#232F34",
@@ -196,7 +196,7 @@ server <- function(input,output){
            x = "Date",
            y = "Reported deaths")+
       geom_line(aes(y=sev_day_avg_daily_deaths_date), col = 'black', size = .7, alpha = .8) +
-      theme_fivethirtyeight() +
+      theme_few() +
       theme(axis.title = element_text(), text = element_text(family = "Verdana"))
     font <- list(family = "Verdana", size = 13,color = 'white')
     label <- list(bgcolor = "#232F34",
@@ -213,7 +213,7 @@ server <- function(input,output){
   
   output$hospicu <- renderPlotly({
     #hospital/icu capacities
-    title <- 'Hosptical/ICU capacities'
+    title <- 'Hospital/ICU capacities'
     g <- df[start():present,] %>% select('date','hospital','icu') %>%
       ggplot(aes(x=date)) +
       geom_col(data=df[start():present,],aes(y=hospital, text = paste("Hospital patients: ",hospital,
@@ -224,7 +224,7 @@ server <- function(input,output){
            x = "Date",
            y="Patients",
            subtitle = paste("updated: ", today_date)) +
-      theme_fivethirtyeight() +
+      theme_few() +
       theme(axis.title = element_text(), text = element_text(family = "Verdana"))
     font <- list(family = "Verdana", size = 13,color = 'white')
     label <- list(bgcolor = "#232F34",
@@ -251,7 +251,7 @@ server <- function(input,output){
            x = "Date",
            y = "Specimen Collected")+
       geom_line(aes(y=sev_day_avg_daily_spec), col = 'black', size = .7, alpha = .8) +
-      theme_fivethirtyeight() +
+      theme_few() +
       theme(axis.title = element_text(), text = element_text(family = "Verdana"))
     font <- list(family = "Verdana", size = 13,color = 'white')
     label <- list(bgcolor = "#232F34",
@@ -300,7 +300,7 @@ server <- function(input,output){
                alpha = .4, fill = colors[2])+
       annotate("rect", xmin = 0, xmax = Inf, ymin = 8, ymax = 25,
                alpha = .4, fill = colors[3])+
-      theme_fivethirtyeight() + 
+      theme_few() + 
       ylim(c(0,25)) + 
       theme(axis.title = element_text(), text = element_text(family = "Verdana")) +
       theme(legend.position = 'top') +
@@ -333,15 +333,15 @@ server <- function(input,output){
            y = "Case rate",
            fill = "Tier") +
       # tiers c(0,2,5,8,100)
-      annotate("rect", xmin = 0, xmax = Inf, ymin = 0, ymax = 1,
+      annotate("rect", xmin = 0, xmax = Inf, ymin = 0, ymax = 2,
                alpha = .4, fill = colors[4])+
-      annotate("rect", xmin = 0, xmax = Inf, ymin = 1, ymax = 4,
+      annotate("rect", xmin = 0, xmax = Inf, ymin = 2, ymax = 4,
                alpha = .4, fill = colors[1])+
       annotate("rect", xmin = 0, xmax = Inf, ymin = 4, ymax = 7,
                alpha = .4, fill = colors[2])+
       annotate("rect", xmin = 0, xmax = Inf, ymin = 7, ymax = 30,
                alpha = .4, fill = colors[3])+
-      theme_fivethirtyeight() + 
+      theme_few() + 
       ylim(c(0,30)) + 
       theme(axis.title = element_text(), text = element_text(family = "Verdana")) +
       theme(legend.position = 'top') +
@@ -381,7 +381,7 @@ server <- function(input,output){
                alpha = .4, fill = colors[2])+
       annotate("rect", xmin = 0, xmax = Inf, ymin = 8, ymax = 25,
                alpha = .4, fill = colors[3])+
-      theme_fivethirtyeight() + 
+      theme_few() + 
       ylim(c(0,25)) + 
       theme(axis.title = element_text(), text = element_text(family = "Verdana")) +
       theme(legend.position = 'top') +

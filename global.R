@@ -1,26 +1,26 @@
 library(shiny)
 library(shinydashboard)
+
 library(ggplot2)
-library(dplyr)
-library(plyr)
 library(ggthemes)
-library(dplyr)
+
 library(plyr)
+library(dplyr)
 library(readr)
-library(ggplot2)
+
 library(jsonlite)
 library(lubridate)
-library(ggthemes)
 library(extrafont)
 library(zoo)
-#library(Cairo) #for anti-aliasing
 library(plotly)
+#library(Cairo) #for anti-aliasing
+
 #options(shiny.usecairo=T)
 
 
 
 #Date
-today_date = "2021/03/23"
+today_date = "2021/07/22"
 
 #reading
 datasets = c("case","death","blueprint","main","hospicu","pcr")
@@ -52,8 +52,6 @@ names(big_df)
 relevant <- c('date','total_cases_repo','daily_cases_repo','daily_cases_spec','daily_7day_avg.x','daily_dth.x','dth_date','total_dth_date','daily_neg_spec','daily_pos_spec','daily_spec','tot_pcr_pos','cdph_tpp','daily_test_repo','daily_7day_avg.y','daily_case_rate','positive_rate','new_var','hospital','icu')
 df <- big_df %>% select(relevant)
 df$date <- date_seq
-
-
 
 
 #working with postivity and case rate

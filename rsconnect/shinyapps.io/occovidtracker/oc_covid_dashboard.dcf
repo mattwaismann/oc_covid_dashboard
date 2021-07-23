@@ -5,9 +5,9 @@ account: occovidtracker
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 3619676
-bundleId: 4386728
+bundleId: 4847150
 url: https://occovidtracker.shinyapps.io/oc_covid_dashboard/
-when: 1616540470.62791
+when: 1626991565.95478
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: README.md|scratch.R
